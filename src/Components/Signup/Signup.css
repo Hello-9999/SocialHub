@@ -1,0 +1,14 @@
+/* 141417 */
+
+.login_box form {
+  background-color: #131313e0;
+  border: 3px solid #696976;
+}
+.login_container {
+
+
+  background: linear-gradient(rgba(0, 0, 0, 0.638),rgba(0, 0, 0, 0.721)),url('../../Img/animated-flying-through-the-stars-and-blue-nebula-in-space-suitable-for-background-or-others-free-video-3603427580.jpg') ;
+  background-repeat: no-repeat;
+  background-size: 100vw 100vh;
+  
+}
