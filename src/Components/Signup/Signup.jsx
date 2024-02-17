@@ -4,6 +4,7 @@ import { auth } from "../../Server/Firebase_Store";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "../Signup/Signup.css";
+import { errortoast } from "../../service/Toastlify";
 
 const Signup = () => {
   const [Full_Name, setFull_Name] = useState("");
@@ -31,35 +32,36 @@ const Signup = () => {
       };
       console.log(Login_Data);
 
-      //   createUserWithEmailAndPassword(auth, Email, Password)
-      //     .then((userCredential) => {
-      //       // Signed up
-      //       const user = userCredential.user;
+        createUserWithEmailAndPassword(auth, Email, Password)
+          .then((userCredential) => {
+            // Signed up
+            const user = userCredential.user;
 
-      //       if (user) {
-      //         updateProfile(user, {
-      //           displayName: `${Full_Name}`,
-      //           photoURL: `${Profile_Pic}`,
-      //         });
-      //       }
+            if (user) {
+              updateProfile(user, {
+                displayName: `${Full_Name}`,
+                photoURL: `${Profile_Pic}`,
+              });
+            }
 
-      //       console.log(user, "user");
+            console.log(user, "user");
+            navigate("/");
 
-      //       // ...
-      //     })
-      //     .catch((error) => {
-      //       const errorCode = error.code;
-      //       const errorMessage = error.message;
-      //       // alert(errorMessage);
-      //       if (errorMessage == "Firebase: Error (auth/email-already-in-use).") {
-      //         alert("Email is already use try anonther email");
-      //       } else {
-      //         alert(errorMessage);
-      //       }
-      //       // ..
-      //     });
 
-      navigate("/");
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // alert(errorMessage);
+            if (errorMessage == "Firebase: Error (auth/email-already-in-use).") {
+              errortoast("Email is already use try anonther email");
+            } else {
+              errortoast(errorMessage);
+            }
+            // ..
+          });
+
     } else {
       alert("Password didn't Match !!");
     }
