@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../Server/Firebase_Store";
+import { auth, handleGooglebtn, provider } from "../../Server/Firebase_Store";
 import { errortoast, successtoast } from "../../service/Toastlify";
+import GoogleButton from "react-google-button";
 
 const Login = () => {
   const [Email, set_Email] = useState();
 
   const [Password, setpassword] = useState();
 
-  const [ConfirmPass, setConfirmPass] = useState();
-  const [Profile_Pic, setProfile_Pic] = useState(null);
   const navigate = useNavigate();
 
   const Login_Submmit = (e) => {
@@ -20,7 +19,7 @@ const Login = () => {
         // Signed IN
         const user = userCredential.user;
         successtoast("Authentication successful! Welcome back.");
-        console.log(user)
+        console.log(user);
         // ...
       })
       .catch((error) => {
@@ -28,9 +27,9 @@ const Login = () => {
         const errorMessage = error.message;
 
         if (errorMessage === "Firebase: Error (auth/invalid-credential).") {
-          errortoast("Please check your login information and try again." );
-        }  else {
-          errortoast(errorMessage );
+          errortoast("Please check your login information and try again.");
+        } else {
+          errortoast(errorMessage);
         }
         // ..
       });
@@ -88,11 +87,11 @@ const Login = () => {
 
               <div className="mt-2">
                 <input
-                  className="w-full text-lg md:text-xl appearance-none block bg-slate-950 text-slate-2a00 border-2 focus:border-blue-800 rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none border-gray-500 focus:bg-slate-950"
+                  className="w-full  text-lg md:text-xl appearance-none block bg-slate-950 text-slate-2a00 border-2 focus:border-blue-800 rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none border-gray-500 focus:bg-slate-950"
                   type="password"
-                  id="Pass"
+                  id="current-password"
                   required
-                  // autoComplete=""
+                  autoComplete=""
                   onChange={(e) => setpassword(e.target.value)}
                 />
 
@@ -120,13 +119,23 @@ const Login = () => {
               </button>
             </div>
 
-            <div className="aleredy mt-4 w-full md:w-4/5 m-auto text-center">
-              {" "}
-              <h5>
-                Don't have an account ? <a href="/signup">Sign Up</a>
-              </h5>
+            <div className="mt-4 w-full md:w-4/5 m-auto text-center">
+              <h6>or</h6>
+
+              <GoogleButton
+                className="mt-4 m-auto w-4/5 rounded-lg "
+                style={{ width: "" }}
+                onClick={handleGooglebtn}
+              />
             </div>
           </form>
+
+          <div className="aleredy mt-4 w-full md:w-4/5 m-auto text-center">
+            {" "}
+            <h5>
+              Don't have an account ? <a href="/signup">Sign Up</a>
+            </h5>
+          </div>
         </div>
       </div>
     </div>
